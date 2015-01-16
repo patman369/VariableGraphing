@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>XGrapher</title>
+</head>
+<body>
+	<canvas id="canvas">
+    
+	<script>
+		//global variables
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");
+		var points = [0];
+		var x;
+
+		//render the state to the canvas
+		function renderGraph(value, size) {
+		  //resize canvas
+		  canvas.width=300;
+		  canvas.height=200;
+		  //fill background
+		  ctx.rect(0,0,canvas.width,canvas.height);
+		  ctx.fillStyle="grey";
+		  ctx.fill();
+		  //set starting point
+		  ctx.beginPath();
+		  ctx.moveTo(0, canvas.height/2);
+		  //add value to beginning of array
+		  points.unshift(value);
+		  //trace points
+		  for (var i=0; i<points.length; i++) {
+		  	ctx.lineTo(i, (points[i]*size)+(canvas.height/2));
+		  }
+		  //take off array points out of view
+		  if (points[points.length]>canvas.width) {
+		  	points.pop();
+		  }
+		  //draw line
+	      ctx.stroke();
+	      previousWave = value;
+		}
+
+		//wrapper around loop function, updates and renders. 10ms=100fps
+		function run() {  
+		  setInterval(function(){
+		    updateY();
+		    renderGraph(x, 1);
+		  }, 10);
+		}
+
+		//all fake input here------------------------------------------------------
+		var y = 0;
+		function updateY() {
+			y += 1;
+			x = (Math.sin(y));
+		}
+		//------------------------------------------------------------------------------------------
+
+		//run renderer
+		run();	
+		</script>
+
+</body>
+</html>
